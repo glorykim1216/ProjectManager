@@ -13,39 +13,53 @@ public class CarTest : MonoBehaviour
     public List<NodeData> _targetList;
     private int _targetIndex;
     public NodeManager _nodeManager;
+    public float _break = 1;
 
     void Start()
     {
         _tr = this.transform;
 
-        _targetList = _nodeManager.GetBestNodeData("Node_01");
+        _targetList = _nodeManager.GetNodeData("Node_01", T_NodeParent.Best);
 
         target = _targetList[_targetIndex]._pos;
     }
 
     void Update()
     {
-        float targetSpeed = 10;
+        float nodeTypeSpeed = 15;
         if (_targetList[_targetIndex]._type == T_Node.Straight)
-            targetSpeed = 38.0f;
+            nodeTypeSpeed = 40.0f;
         else if (_targetList[_targetIndex]._type == T_Node.CurveIn)
-            targetSpeed = 10.0f;
+            nodeTypeSpeed = 12.0f;
         else if (_targetList[_targetIndex]._type == T_Node.Curve)
-            targetSpeed = 8.0f;
+            nodeTypeSpeed = 10.0f;
         else if (_targetList[_targetIndex]._type == T_Node.CurveOut)
-            targetSpeed = 15.0f;
+            nodeTypeSpeed = 14.0f;
         else if (_targetList[_targetIndex]._type == T_Node.DRS)
-            targetSpeed = 45.0f;
+            nodeTypeSpeed = 50.0f;
 
-        _speed = Mathf.Lerp(_speed, targetSpeed, Time.deltaTime);
-        _sqrMagnitudeValue = _speed;
+        float targetSpeed = 15;
+        // 현재 속도와 앞차 or 노드속도 비교
+        float breakValue = _speed / nodeTypeSpeed;
+        if (breakValue > 1)
+        {
+            targetSpeed = nodeTypeSpeed - breakValue;
+        }
+        else
+        {
+            breakValue = 1;
+            targetSpeed = nodeTypeSpeed;
+        }
+
+        _speed = Mathf.Lerp(_speed, targetSpeed, Time.deltaTime * breakValue);
+        _sqrMagnitudeValue = targetSpeed;
 
         var pos = target - _tr.position;
         var sqr = Vector3.SqrMagnitude(pos);
         //Debug.Log(sqr);
         if (sqr <= _sqrMagnitudeValue)
         {
-            if (_targetIndex < _targetList.Count-1)
+            if (_targetIndex < _targetList.Count - 1)
             {
                 _targetIndex++;
             }

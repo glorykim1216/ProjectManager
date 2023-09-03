@@ -157,10 +157,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {x: 55, y: 0.5, z: -45}
   _speed: 0
-  _handlingSpeed: 2.6
+  _handlingSpeed: 2.2
   _sqrMagnitudeValue: 10
   _targetList: []
   _nodeManager: {fileID: 2097817799}
+  _break: 1
 --- !u!65 &79834463
 BoxCollider:
   m_ObjectHideFlags: 0

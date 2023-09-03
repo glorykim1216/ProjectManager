@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using UnityEditor;
 
 [System.Serializable]
 public class Serialization<T>
@@ -37,6 +37,8 @@ public class NodeEditor : MonoBehaviour
             string jsonData = JsonUtility.ToJson(new Serialization<NodeData>(nodeDataList));
             JsonParser.Instance.SaveToJsonFile($"{_nodeDataFielPath}/{nodeName}/{nodeName}_{trNode.name}.json", jsonData);
         }
+
+        AssetDatabase.Refresh();
     }
 
     public bool Load(string nodeName)

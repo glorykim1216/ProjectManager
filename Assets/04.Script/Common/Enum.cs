@@ -9,3 +9,11 @@ public enum T_Node
     DRS,
     Max
 }
+
+public enum T_NodeParent
+{
+    Center,
+    Right,
+    Left,
+    Best,
+}
